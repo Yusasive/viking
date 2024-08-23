@@ -24,7 +24,7 @@ const onError = (error) => {
 };
 
 // HTML task
-function html() {
+export function html() {
     return gulp.src('src/html/*.html')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(fileinclude({
@@ -44,7 +44,7 @@ function html() {
 }
 
 // CSS task
-function css() {
+export function css() {
     return gulp.src('src/scss/main.scss')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(sassCompilerInstance({ outputStyle: 'compressed' }).on('error', sassCompilerInstance.logError)) // Use sassCompilerInstance
@@ -58,7 +58,7 @@ function css() {
 }
 
 // JS task
-function js() {
+export function js() {
     return gulp.src('src/js/**/*')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(concat('production.js'))
@@ -67,7 +67,7 @@ function js() {
 }
 
 // Image task
-function images() {
+export function images() {
     return gulp.src('src/img/**/*.+(png|jpeg|jpg|gif|svg)')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(imagemin())
@@ -75,7 +75,7 @@ function images() {
 }
 
 // Start server
-function browserSyncTask(done) {
+export function browserSyncTask(done) {
     browserSync.init({
         server: {
             baseDir: 'dist'
@@ -85,7 +85,7 @@ function browserSyncTask(done) {
 }
 
 // Watch files
-function watchFiles() {
+export function watchFiles() {
     gulp.watch('src/html/**/*', html).on('change', browserSync.reload);
     gulp.watch('src/scss/**/*', css).on('change', browserSync.reload);
     gulp.watch('src/js/**/*', js).on('change', browserSync.reload);
@@ -93,7 +93,7 @@ function watchFiles() {
 }
 
 // Default task
-const build = gulp.series(gulp.parallel(html, css, js, images));
-const watch = gulp.series(build, gulp.parallel(browserSyncTask, watchFiles));
+export const build = gulp.series(gulp.parallel(html, css, js, images));
+export const watch = gulp.series(build, gulp.parallel(browserSyncTask, watchFiles));
 
 export default watch;
